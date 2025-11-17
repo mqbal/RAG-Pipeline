@@ -53,17 +53,17 @@ def extract_pdf(pdf_path):
 
 # Process Corpus pdf files into text files
 def process_pdf_to_txt():
-    print("Starting PDF Extraction")
+    print("  Starting PDF Extraction")
     pdf_files = glob.glob(os.path.join(CORPUS_PATH, "*.pdf"))
     time_start = time.time()
     pdf_files_sorted = sorted(pdf_files, key=os.path.getsize, reverse=True) # longest schedule first, greedy approximation
     with multiprocessing.Pool(processes=__THREAD_COUNT) as pool:
         pool.map(extract_pdf, pdf_files_sorted)
-    print(f"Extract Total: {time.time() - time_start}")
+    print(f"    Extract Total: {time.time() - time_start}")
 
 # Chunk processed text files into new text files with one chunking per line
 def chunk_processed_txt():
-    print("Starting Text Chunking")
+    print("  Starting Text Chunking")
     txt_files = glob.glob(os.path.join(TXT_OUTPUT_DIRECTORY, "*.txt"))
     time_start = time.time()
 
@@ -81,4 +81,8 @@ def chunk_processed_txt():
             with open(output_path, "x", encoding="utf-8") as f:
                 for chunk in chunked:
                     f.write(chunk + "\n")
-    print(f"Chunk Total: {time.time() - time_start}")
+    print(f"    Chunk Total: {time.time() - time_start}")
+
+if __name__ == "__main__":
+    pdf_helper.process_pdf_to_txt()    # convert pdfs to txt files
+    pdf_helper.chunk_processed_txt()   # create chunks from txt files
