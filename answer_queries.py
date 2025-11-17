@@ -2,7 +2,7 @@
 import os, glob, dotenv, time
 dotenv.load_dotenv()
 
-FETCH_K = int(os.environ.get("FETCH_K", 3))
+FETCH_K = int(os.environ.get("FETCH_K", 5))
 
 import pdf_helper   # helper module that processes initial Corpus
 

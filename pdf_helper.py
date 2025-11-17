@@ -15,8 +15,8 @@ CORPUS_PATH = os.path.join(PROJECT_ROOT, "Corpus")                  # Input dire
 CHUNKS_OUTPUT_DIRECTORY = os.path.join(PROJECT_ROOT, "Chunked_txt") # Output directory for .txt files
 TXT_OUTPUT_DIRECTORY = os.path.join(PROJECT_ROOT, "Processed_pdf")  # Output directory for .txt files
 
-CHUNK_WORD_COUNT = int(os.environ.get("CHUNK_WORD_COUNT", 20))
-OVERLAP = int(os.environ.get("OVERLAP", 10))
+CHUNK_WORD_COUNT = int(os.environ.get("CHUNK_WORD_COUNT", 1000))
+OVERLAP = int(os.environ.get("OVERLAP", 200))
 __THREAD_COUNT = int(os.environ.get("THREAD_COUNT", 4))
 
 # Use regex to find repetitive whitespace and replace it with a singular space.
