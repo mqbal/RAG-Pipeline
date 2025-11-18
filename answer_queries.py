@@ -73,31 +73,39 @@ if __name__ == "__main__":
     print(f"Embed Total: {time.time() - embed_start}")
 
     # turn query text in to an embedding, then search our index
-    def search(query, k=3):
+    def search(query, k=FETCH_K):
         q_emb = model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
 
         # Search both indexes
         scores_flat_ip, idxs_flat_ip = index_flat_ip.search(q_emb, k)  # (1, k)
         scores_hnsw, idxs_hnsw = index_hnsw.search(q_emb, k)
 
-        # Results will be merged into a set to avoid duplicate results
+        # Results will be merged into a dict of dicts to avoid duplicate results
         results = {}
         # IndexFlatIP results saved first
         for rank, (i, s) in enumerate(zip(idxs_flat_ip[0], scores_flat_ip[0]), start=1):
-            results[i] = {"rank": rank, "score": float(s), "chunk": chunks[i]}
+            results[i] = {"score": float(s), "chunk": chunks[i]}
         
-        # HNSW results will append to the set if they are new, else update the result
+        # HNSW results will append to the dict if the chunk is new, else update the result with the average of both scores
         for rank, (i, s) in enumerate(zip(idxs_hnsw[0], scores_hnsw[0]), start=1):
-            if rank not in results:
-                results[i] = {"rank": rank, "score": float(s), "chunk":chunks[i]}
+            if i not in results:
+                results[i] = {"score": float(s), "chunk": chunks[i]}
             else:
-                score = results[i]["score"]
-                new_score = (score + s) / 2 # Averaging of scores for duplicate results
-                results[i]["score"] = new_score
+                results[i]["score"] = (results[i]["score"] + s) / 2     # Averaging of flat and HNSW scores for duplicate results
         
-        # Sort the final results set in descending order
-        results = sorted(results.values(), key=lambda x: x['score'], reverse=True)
-        return results
+        results_sorted = sorted(
+            ({"index": i, "score": d["score"], "chunk": d["chunk"]} for i, d in results.items()),
+            key=lambda x: x["score"],
+            reverse=True
+        )
+
+        # Trim to exactly k unique results and assign ranks
+        top_k = []
+        for rank, item in enumerate(results_sorted[:k], start=1):
+            top_k.append({"rank": rank, "score": item["score"], "chunk": item["chunk"]})
+
+        return top_k
+
 
     query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")
     while query and query != "X":
