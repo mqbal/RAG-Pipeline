@@ -56,17 +56,43 @@ if __name__ == "__main__":
     model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device=transform_device)
     emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=True)
     dim = emb_matrix.shape[1]
-    index = faiss.IndexFlatIP(dim)  # cosine works with normalized vectors using inner product
-    index.add(emb_matrix)           # store embeddings
+
+    # faiss IndexFlatIP exact search
+    index_flat_ip = faiss.IndexFlatIP(dim)  # cosine works with normalized vectors using inner product
+    index_flat_ip.add(emb_matrix)           # store embeddings
+
+    # faiss HNSW approximate search
+    # 16 is the number of neighbors in the resulting graph
+    # May also use values of 32 or 64. Higher values are more accurate but require more memory
+    index_hnsw = faiss.IndexHNSWFlat(dim, 16)
+    index_hnsw.add(emb_matrix)                # store embeddings
     print(f"Embed Total: {time.time() - embed_start}")
 
     # turn query text in to an embedding, then search our index
     def search(query, k=3):
         q_emb = model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
-        scores, idxs = index.search(q_emb, k)  # (1, k)
-        results = []
-        for rank, (i, s) in enumerate(zip(idxs[0], scores[0]), start=1):
-            results.append({"rank": rank, "score": float(s), "chunk": chunks[i]})
+
+        # Search both indexes
+        scores_flat_ip, idxs_flat_ip = index_flat_ip.search(q_emb, k)  # (1, k)
+        scores_hnsw, idxs_hnsw = index_hnsw.search(q_emb, k)
+
+        # Results will be merged into a set to avoid duplicate results
+        results = {}
+        # IndexFlatIP results saved first
+        for rank, (i, s) in enumerate(zip(idxs_flat_ip[0], scores_flat_ip[0]), start=1):
+            results[i] = {"rank": rank, "score": float(s), "chunk": chunks[i]}
+        
+        # HNSW results will append to the set if they are new, else update the result
+        for rank, (i, s) in enumerate(zip(idxs_hnsw[0], scores_hnsw[0]), start=1):
+            if rank not in results:
+                results[i] = {"rank": rank, "score": float(s), "chunk":chunks[i]}
+            else:
+                score = results[i]["score"]
+                new_score = (score + s) / 2 # Averaging of scores for duplicate results
+                results[i]["score"] = new_score
+        
+        # Sort the final results set in descending order
+        results = sorted(results.values(), key=lambda x: x['score'], reverse=True)
         return results
 
     query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")

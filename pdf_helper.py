@@ -84,5 +84,5 @@ def chunk_processed_txt():
     print(f"    Chunk Total: {time.time() - time_start}")
 
 if __name__ == "__main__":
-    pdf_helper.process_pdf_to_txt()    # convert pdfs to txt files
-    pdf_helper.chunk_processed_txt()   # create chunks from txt files
+    process_pdf_to_txt()    # convert pdfs to txt files
+    chunk_processed_txt()   # create chunks from txt files
