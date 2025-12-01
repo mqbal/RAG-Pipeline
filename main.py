@@ -10,24 +10,23 @@ def login_user(role_name, email, password):
     """
     return database_helper.authenticate_user(role_name, email, password)
 
-# DESIGN CHOICE: sign up can only make new EndUser
-def handle_signup(role_name, email, password):
-    """
-    Simply hooks in to backend DB helper's authentication implementation.
-    """
-    return database_helper.handle_signup(role_name, email, password)
-
 def create_user():
     print("Creating a new EndUser...")
-    name = input("  Enter name: ").strip()
-    email = input("  Enter email: ").strip()
+    name = ""
+    while name == "":
+        name = input("  Enter name: ").strip()
+    email = ""
+    while email == "":
+        email = input("  Enter email: ").strip()
 
     # unlike "sign_up" admin can actually set the role
     role = input("  Enter role (\"EndUser\", \"Curator\", \"Admin\"): ").strip()
     while role not in ['EndUser', 'Curator', 'Admin']:
         print("Invalid role. Try again.")
         role = input("  Enter role (\"EndUser\", \"Curator\", \"Admin\"): ").strip()
-    username = input("  Enter username: ").strip()
+    username = ""
+    while username == "":
+        username = input("  Enter username: ").strip()
     while True:
         password = input("  Enter password: ").strip()
         confirm_pw = input("  Confirm password: ").strip()
@@ -45,9 +44,15 @@ def create_doc():
     # TODO
 
 def sign_up():
-    name = input("  Enter name: ").strip()
-    email = input("  Enter email: ").strip()
-    username = input("  Enter username: ").strip()
+    name = ""
+    while name == "":
+        name = input("  Enter name: ").strip()
+    email = ""
+    while email == "":
+        email = input("  Enter email: ").strip()
+    username = ""
+    while username == "":
+        username = input("  Enter username: ").strip()
     while True:
         password = input("  Enter password: ").strip()
         confirm_pw = input("  Confirm password: ").strip()
@@ -92,6 +97,19 @@ def delete_user():
         return
     return database_helper.ADMIN_user_delete(Delete_ID)
 
+def fetch_docs():
+    print("  1. Fetch Your Documents")
+    print("  2. Fetch All Documents")
+    choice = None
+    while choice != "X" and choice != "":
+        choice = input("  Select an option (1-2, X to exit): ").strip()
+
+        if choice == "1":
+            print("  Your Documents: ")
+            # TODO: output the documents
+        elif choice == "2":
+            print("  All Documents: ")
+            # TODO: output all documents
 
 def delete_doc():
     print("Deleting a Document...")
@@ -228,12 +246,10 @@ def enduser_loop():
             while True:
                 query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")
                 if query != "X":
-                    # print(f"DEBUG Query is: {query}")
+                    print(f"----DEBUG Query is: {query}") # TODO remove this!
                     # TODO: convert query string to an embedding eg embedding = model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
                     # where model is the SentenceTransformer. You can then plug in the embedding into a SQL SELECT statement
-                    query = input("Would you like to enter another query? (Y for a new query or anything else to exit) ")
-                    query = query.upper()
-                if query != "Y":
+                else:
                     break
         elif choice == "X" or choice == "":
             print("Returning to role selection...")
