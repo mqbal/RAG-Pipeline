@@ -2,7 +2,7 @@
 Maaz, Andrew, and Elliot's implementation for the Fall 2025 CS480 Final Project.
 
 ### Project Summary
-This project provides a Command Line Interface (CLI) to interface with a PostgreSQL database to provide User interaction with a predetermined corpus of PDF files. These PDF files chosen by a Curator to be processed into vector embeddings. Then it uses these embeddings to prompt an LLM front-end to respond to user queries based on the embeddings given.
+This project provides a Command Line Interface (CLI) to interface with a PostgreSQL database to provide User interaction with a predetermined corpus of PDF files. These PDF files are chosen by a Curator to be processed into vector embeddings. Then it uses these embeddings to prompt an LLM front-end to respond to user queries based on the embeddings given.
 
 ## Main CLI
 - Main Menu prompts the user to login in to their appropriate User Type, or to create a new EndUser. Login choices are Admin, Curator, and EndUser.
@@ -41,7 +41,7 @@ emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=Tr
 | Document Preparation       |   <ul><li>- [x] </li></ul> | pdf_helper.py          |
 | Vector Database Schema     |   <ul><li>- [x] </li></ul> | CS480_FinalProject.sql |
 | Query Large Language Model |   <ul><li>- [x] </li></ul> | answer_queries.py      |
-| Database Application       |   <ul><li>- [X] </li></ul  | database_helper.py     |
+| Database Application       |   <ul><li>- [X] </li></ul> | database_helper.py     |
 
 # Deliverables
 1. Text Chunking
