@@ -17,8 +17,31 @@ def authenticate_user(role, email, password):
 
 def create_user():
     print("Creating a new EndUser...")
-    # TODO: prompt for all necessary info
-    assert(False)
+    res = sign_up()
+    if res:
+        print("New EndUser successfully made.\n")
+    else:
+        print("ERROR: New EndUser was NOT created.\n")
+    
+
+def sign_up():
+    name = input("  Enter name: ").strip()
+    email = input("  Enter email: ").strip()
+    # TODO: check email is unique
+    # print("Account with that email already exists. Try again.")
+    username = input("  Enter username: ").strip()
+    # TODO: check username is unique
+    while True:
+        password = input("  Enter password: ").strip()
+        confirm_pw = input("  Confirm password: ").strip()
+
+        if password != confirm_pw:
+            print("    Password does not match...")
+        else:
+            break;
+    # TODO: add new user to database with name, email, username, and password
+    # if the database has an error return False
+    return True
 
 
 def fetch_users():
@@ -51,7 +74,7 @@ def print_login_menu():
 
 
 def print_crud_menu():
-    print("\n=== CRUD Menu ===")
+    print("\n=== Curator Menu ===")
     print("1. Create")
     print("2. Read")
     print("3. Update")
@@ -68,9 +91,22 @@ def print_admin_menu():
     print("X. Log Out")
     print("=================")
 
+def print_user_menu():
+    print("\n=== USER Menu ===")
+    while True:
+        query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")
+        if query != "X":
+            print(f"DEBUG Query is: {query}")
+            # TODO: convert query string to an embedding eg embedding = model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
+            # where model is the SentenceTransformer. You can then plug in the embedding into a SQL SELECT statement
+        query = input("Would you like to enter another query? (Y or Yes for a new query or anything else to exit) ")
+        if query != "Y" or query != "Yes":
+            break
+    
+
 # When program starts, have the user login as a particular role before they can do something
 # Returns number representing the user's role
-def landing_loop(role):
+def landing_loop():
     while True:
         # Step 1. Ask user for role
         print_login_menu()
@@ -82,15 +118,14 @@ def landing_loop(role):
         
         # sign up can only create new EndUsers
         if role_choice == "S":
-            # Prompt for new credentials
-            email = input(f"Enter {role} email: ").strip()
-            password = input(f"Enter {role} password: ").strip()
-            res = handle_signup(email, password)
-            if res == True:
-                return 3    # new EndUser successfully made
+            result = sign_up()
+            # res = handle_signup(email, password)
+            if result == True:
+                print("New EndUser successfully made.\n")
+                continue    # Allow user to select a new menu option
             else:
-                print("Account with that email already exists. Try again.")
-                continue    # bad credentials given, ask again
+                print("ERROR: New EndUser was NOT created.\n")
+                continue    # database error occurred
 
         role = ROLE_MAPPING.get(role_choice, None)  # set to None if not found
 
@@ -109,7 +144,7 @@ def landing_loop(role):
             continue
 
         # successful log in
-        return int(role_choice)
+        return role_choice
 
 # can do CRUD on the Users table
 def admin_loop():
@@ -137,7 +172,31 @@ def curator_loop():
 
 # can submit queries
 def enduser_loop():
-    pass
+    # print_crud_menu():
+    # print("\n=== CRUD Menu ===")
+    # print("1. Create")
+    # print("2. Read")
+    # print("3. Update")
+    # print("4. Delete")
+    # print("X. Exit")
+    # print("=================")
+    choice = None
+    while choice != "X" and choice != "":
+        print_user_menu()
+        choice = input("Select an option (1-4, X to exit): ").strip()
+
+        if choice == "1":
+            create_user()
+        elif choice == "2":
+            fetch_users()
+        elif choice == "3":
+            update_user()
+        elif choice == "4":
+            delete_user()
+        elif choice == "X" or choice == "":
+            print("Returning to role selection...")
+        else:
+            print("Invalid choice. Please try again.")
 
 def main():
     """
