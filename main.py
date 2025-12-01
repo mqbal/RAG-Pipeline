@@ -1,6 +1,7 @@
 import sys
 import database_helper  # handles database operations
 import pdf_helper
+import answer_queries
 
 ROLE_MAPPING = {"1": "Admin", "2": "Curator", "3": "EndUser"}
 
@@ -292,19 +293,9 @@ def curator_loop(curator_id):
 
 # can submit queries
 def enduser_loop():
-    choice = None
-    while choice != "X" and choice != "":
-        print_user_menu()
-
-        while True:
-            query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")
-            if query != "X":
-                print(f"----DEBUG Query is: {query}") # TODO remove this!
-                # TODO: convert query string to an embedding eg embedding = model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
-                # where model is the SentenceTransformer. You can then plug in the embedding into a SQL SELECT statement
-            else:
-                break
-        print("Returning to role selection...")
+    print_user_menu()
+    answer_queries.queryDB()
+    print("Returning to role selection...")
 
 def main():
     print(database_helper.ADMIN_users_fetch())
