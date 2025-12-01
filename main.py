@@ -120,10 +120,14 @@ def create_doc(curator_id):
 
     source = ""
     while source == "":
-        source = input("  Enter document source: ").strip()
+        source = input("  Enter source path: ").strip()
 
-    return database_helper.CURATOR_document_create(title=title, doc_type=doc_type, source=source, added_by=curator_id, processed=False)
-
+    ret = database_helper.CURATOR_document_create(title=title, doc_type=doc_type, source=source, added_by=curator_id, processed=False)
+    # added new doc to Document table, now add to index
+    if ret is not None:
+        answer_queries.add_document_to_index(new_path)
+    return ret
+    
 def fetch_docs(curator_id):
     print("  1. Fetch Your Documents")
     print("  2. Fetch All Documents")
@@ -199,10 +203,6 @@ def print_admin_menu():
     print("4. Delete User")
     print("X. Log Out")
     print("=================")
-
-def print_user_menu():
-    print("\n=== USER Menu ===")
-
 
 # When program starts, have the user login as a particular role before they can do something
 # Returns number representing the user's role
@@ -292,10 +292,10 @@ def curator_loop(curator_id):
             print("Invalid choice. Please try again.")
 
 # can submit queries
-def enduser_loop():
-    print_user_menu()
-    answer_queries.queryDB()
-    print("Returning to role selection...")
+def enduser_loop(enduser_id):
+    print("\n=== USER Menu ===")
+    top_k = answer_queries.queryDB(enduser_id)
+
 
 def main():
     print(database_helper.ADMIN_users_fetch())
@@ -320,7 +320,7 @@ def main():
         elif user_role == "Curator":
             curator_loop(user_id) # can do CRUD on the Documents table
         elif user_role == "EndUser":
-            enduser_loop() # can submit queries
+            enduser_loop(user_id) # can submit queries
         else:
             assert(False)   # dead code
 

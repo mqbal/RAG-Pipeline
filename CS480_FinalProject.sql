@@ -3,7 +3,7 @@
  
 CREATE SCHEMA CS480_FinalProject;
 SET search_path TO CS480_FinalProject;
-
+CREATE EXTENSION IF NOT EXISTS vector;
 -- User Role has fixed options
 CREATE TYPE user_role AS ENUM ('EndUser', 'Admin', 'Curator');
 
@@ -85,4 +85,12 @@ CREATE TABLE Queried_Docs (
     PRIMARY KEY (log_id, doc_id),
     FOREIGN KEY (log_id) REFERENCES QueryLog(log_id) ON DELETE CASCADE, -- When the log that fetched the doc is deleted, delete all the queried_docs they made too
     FOREIGN KEY (doc_id) REFERENCES Document(doc_id)
+);
+
+CREATE TABLE Embeddings (
+    embed_id SERIAL PRIMARY KEY,
+    source_doc_id INT NOT NULL,
+    chunk TEXT,
+    embedding cs480_finalproject.vector(384),
+    FOREIGN KEY (source_doc_id) REFERENCES Document(doc_id) ON DELETE CASCADE -- if source doc deleted, remove any embeddings that came from it too
 );

@@ -4,7 +4,8 @@ conn = psycopg2.connect(database="postgres",
         host="localhost",
         user="postgres",
         password="postgres",
-        port="5432")
+        port="5432",
+        options="-c search_path=cs480_finalproject,public")
 
 def authenticate_user(role, email, password):
     """
@@ -269,8 +270,9 @@ def CURATOR_documents_fetch(cur_id=None):
     return docs
 
 # Document UPDATE
-# DESIGN CHOICE: Curators can not override "timestamp" or "added_by"
-def CURATOR_document_update(cur_id, doc_id, title=None, doc_type=None, source=None, processed=None):
+# DESIGN CHOICE: Curators can not override "timestamp", "added_by", or "source"
+# source indirectly determines document ID, so it must not be overridden
+def CURATOR_document_update(cur_id, doc_id, title=None, doc_type=None, processed=None):
     """
     Update fields for a given document_id.
     Only Curators are allowed to call this.
@@ -289,7 +291,6 @@ def CURATOR_document_update(cur_id, doc_id, title=None, doc_type=None, source=No
             fields = {
                 "title": title,
                 "type": doc_type,
-                "source": source,
                 "processed": processed,
             }
             updates = {key: val for key, val in fields.items() if val is not None and val != ""}
