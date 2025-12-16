@@ -1,8 +1,8 @@
-# Team Green Fall CS480 Final Project
-Maaz, Andrew, and Elliot's implementation for the Fall 2025 CS480 Final Project.
+# Question Answer Machine
+Answers user questions by fetching relevant text from a vector database to RAG a frontend LLM.
 
 ### Project Summary
-This project provides a Command Line Interface (CLI) to interface with a PostgreSQL database to provide User interaction with a predetermined corpus of PDF files. These PDF files are chosen by a Curator to be processed into vector embeddings. Then it uses these embeddings to prompt an LLM front-end to respond to user queries based on the embeddings given.
+This project provides a Command Line Interface (CLI) to interface with a PostgreSQL database to provide User Interaction with a predetermined corpus of PDF files. These PDF files are chosen by a Curator to be processed into vector embeddings. Then it uses these embeddings to prompt an LLM front-end to respond to user queries based on the embeddings given.
 
 ## Main CLI
 - Main Menu prompts the user to login in to their appropriate User Type, or to create a new EndUser. Login choices are Admin, Curator, and EndUser.
@@ -16,9 +16,9 @@ This project provides a Command Line Interface (CLI) to interface with a Postgre
 - Then we chunk the large, raw text in to fixed sized chunks.
 - After converting all the PDFs into chunks, we then use an exisiting embedding model from HuggingFace to convert chunks to embeddings.
 
-EX from TA Demo:
+Code Excerpt:
 ```
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")  # 384-dim
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device=transform_device)  # 384-dim
 emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=True)
 ```
 
@@ -27,33 +27,25 @@ emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=Tr
 - We use these embeddings to build an HSNW index.
 
 ## Query the LLM
-- We accept a user query via command line and convert it in to an embedding. We then use our vectorDB index to find the top K most relevant results. We have chosen our default K to be 5, after some testing.
-- We inject these fetched embeddings in to the LLM prompt alongside the original user query.
-- Instruct LLM to answer the users query using these embeddings.
+- We accept a question via command line and convert the string in to an embedding. We search our vectorDB index to find the top K most relevant text chunks. The default K is 5.
+- Fetched embeddings areinjected in to the LLM prompt alongside the original user query.
+- Instruct LLM to answer the user's question using these embeddings.
 
 ## Database Application
-- Wrap the Ollama LLM in a full app with a basic CLI, supporting user sign up and log in.
-- Implement CRUD operations on our relational database component.
+- Wraps the Ollama LLM in a full app with a basic CLI, supporting user sign up and log in.
+- Implements CRUD operations on our relational database component.
 
-# Project Checklist
-| Project Step               | Status | Location          |
-|----------------------------|:------:|-------------------|
-| Document Preparation       |   <ul><li>- [x] </li></ul> | pdf_helper.py          |
-| Vector Database Schema     |   <ul><li>- [x] </li></ul> | CS480_FinalProject.sql |
-| Query Large Language Model |   <ul><li>- [x] </li></ul> | answer_queries.py      |
-| Database Application       |   <ul><li>- [X] </li></ul> | database_helper.py     |
-
-# Deliverables
-1. Text Chunking
-- pdf_helper.py line 65: chunk_processed_txt
-- Run `python pdf_helper.py` to create chunks directly. Or run `python answer_queries.py` which will also call it.
-2. Chunk to Embedding
-- answer_queries.py starting at line 56
-- After we build our list of chunks, we encode our list with an existing embedding model `all-MiniLM-L6-v2`.
-- model.encode returns a tuple of (chunk count, embedding dimensions), we use the dimensions to build our FAISS index with cosine similarity approximation.
-3. Vector Storage:
-- answer_queries.py line 59: This is where we build our HNSW index.
-- This index is used in `search` starting on line 64 in answer_queries.py to fetch the top K nearest neighbors to the query embedding.
+# Directory Structure
+├── RAG_Pipeline.sql          -- Defines the schema of both vector and relational database
+├── Chunked_txt/              -- Directory of text chunks of each text file, speeds up vectorDB creation
+├── Corpus/                   -- Directory of user's documents that the LLM will answer from
+├── Processed_pdf/            -- Directory of plaintext files extracted from Corpus, skips redundant PDF extraction
+├── README.md
+├── answer_queries.py         -- Interacts with vector database to fetch relevant chunks
+├── database_helper.py        -- Interacts with relational database for CRUD
+├── main.py                   -- ENTRYPOINT: Defines a simple CLI menu for user's to navigate
+├── pdf_helper.py             -- Helper function that processes PDFs in Corpus
+└── requirements.txt          -- Necessary python imports
 
 # Set Up Instructions
 Project Set Up
