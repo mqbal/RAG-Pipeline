@@ -269,7 +269,7 @@ def queryDB(enduser_id):
         print("\nTop matches:")
         for h in hits:
             print(f"[{h['rank']}] score={h['score']:.3f}\n{h['chunk'][:200]}...\n---")
-        print("\n\n")
+        print("\n")
 
         print("Thinking...")    
         # Construct a RAG-style prompt by injecting the retrieved hits
@@ -284,7 +284,7 @@ def queryDB(enduser_id):
                 {"role": "user", "content": prompt}
             ]
         )
-        print("\n\n")
+        print("\n")
         print(response["message"]["content"])
         print("\n\n")
         query = input("What would you like to know about? Answer with \"X\" or nothing to exit.\n->")

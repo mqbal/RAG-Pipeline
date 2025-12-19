@@ -23,7 +23,7 @@ def authenticate_user(role, email, password):
 
     cur.execute(users_select, (email, password, role))
     result = cur.fetchone()
-    print(result)
+    # print(result)
     cur.close()
 
     return result

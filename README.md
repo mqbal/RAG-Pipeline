@@ -65,43 +65,63 @@ Run `python main.py` in your terminal. Note that embedding performance is signif
 
 # Sample Program Run
 ```
+$ python main.py 
+Loading SentenceTransformer model...
+
+=== Login Selection Menu ===
+1. Admin
+2. Curator
+3. EndUser
+S. Sign Up as EndUser
+X. Exit
+===========================
+Select an option: 3
+Enter EndUser email: miqba4@uic.edu
+Enter EndUser password:
+Authenticating EndUser with email=miqba4@uic.edu...
+Hello, Maaz you are successfully logged in as EndUser!
+
+=== USER Menu ===
 What would you like to know about? Answer with "X" or nothing to exit.
-->What is illinois doing to improve its waste management?
+->Tell me about the future of Florida' waste management and environmental conservation efforts 
+[(23428, 'strategic investments in waste management. By ensuring that Florida has the necessary infrastructure to support sustainable waste management, this study', 0.18808760678506742), (16660, 'strategic investments in waste management. By ensuring that Florida has the necessary infrastructure to support sustainable waste management, this study', 0.18808771478344655), (23425, 'it is a roadmap for the future of Florida’s waste and recycling infrastructure. The findings will inform state and local', 0.1998309254595909), (16657, 'it is a roadmap for the future of Florida’s waste and recycling infrastructure. The findings will inform state and local', 0.1998309254595909), (27396, "a vital component of Florida's waste management and recycling infrastructure. They support the state's sustainability goals by diverting large volumes", 0.2021973491369884)]
 
 Top matches:
-[1] score=0.642
-Environmental Protection, 2015 Statewide Waste Characterization Study. http://www.ct.gov/deep/lib/deep/waste_management_and_disposal/Solid_Waste_Manageme nt_Plan/CMMS_Final_2015_MSW_Characterization_S...
+[1] score=0.188
+strategic investments in waste management. By ensuring that Florida has the necessary infrastructure to support sustainable waste management, this study...
 ---
-[2] score=0.642
-and Economic Opportunity/Illinois Recycling Association, Illinois Commodity/Waste Generation and Characterization Study, 2009. http://www.illinoisrecycles.org/pdffiles/ICWCGSReport052209.pdf • Georgia...
+[2] score=0.188
+strategic investments in waste management. By ensuring that Florida has the necessary infrastructure to support sustainable waste management, this study...
 ---
-[3] score=0.638
-Department of Commerce and Economic Opportunity, Illinois and Illinois Recycling Association. Illinois Commodity/Waste Generation and Characterization Study Update 2015. https://www.illinois.gov/dceo/...
+[3] score=0.200
+it is a roadmap for the future of Florida’s waste and recycling infrastructure. The findings will inform state and local...
 ---
-[4] score=0.633
-2013 Statewide Waste Characterization 42 Results 42 Table 3-3: Illinois 2008 Compared to 2015 Statewide Waste Characterization Results 44 Table...
+[4] score=0.200
+it is a roadmap for the future of Florida’s waste and recycling infrastructure. The findings will inform state and local...
 ---
-[5] score=0.631
-comparison with a 2008 statewide study. TABLE 3-3: ILLINOIS 2008 COMPARED TO 2015 STATEWIDE WASTE CHARACTERIZATION RESULTS 2008 26% 14.4%...
+[5] score=0.202
+a vital component of Florida's waste management and recycling infrastructure. They support the state's sustainability goals by diverting large volumes...
 ---
-
 
 
 Thinking...
 
 
+Based on the provided context, it appears that Florida is actively working to improve its waste management and recycling infrastructure to achieve sustainable development. Some potential trends or directions for the future of Florida's waste management and environmental conservation efforts could include:
 
-Based on the provided context, it appears that Illinois has been actively working to improve its waste management through various studies and initiatives.
+1. Increased emphasis on circular economy principles: As Florida continues to develop its waste management infrastructure, there may be a greater focus on designing waste out of products and processes, reducing consumption, reusing materials whenever possible, and recycling as much as possible.
 
-One such initiative is the annual statewide waste characterization study, which provides valuable data on the types and amounts of waste generated in Illinois. The 2015 study, for example, found that Illinois residents generated approximately 22 million tons of municipal solid waste (MSW) in 2014, with a significant portion being recyclable materials.
+2. Expanded use of technology: With the advancement of technologies like artificial intelligence, blockchain, and the Internet of Things (IoT), it's likely that Florida will see more widespread adoption of innovative solutions to improve waste collection, processing, and disposal.
 
-The state has also been working to increase recycling rates through education and outreach efforts, as well as by implementing programs to encourage businesses and households to recycle more effectively. For example, the Illinois Recycling Association offers educational resources and technical assistance to help individuals and organizations implement effective recycling programs.
+3. Greater emphasis on reducing waste generation: While recycling and proper disposal are essential, reducing waste at its source is also crucial for environmental conservation efforts in Florida. This could involve increasing education and outreach programs to encourage reduced consumption and single-use plastics reduction.
 
-In addition, the state has been exploring innovative technologies and strategies for managing waste, such as anaerobic digestion and gasification, which can help reduce greenhouse gas emissions and minimize the environmental impacts of waste disposal.
+4. Collaboration between state, local governments, and private sector: The provided context highlights the importance of state and local government collaboration in informing future directions for Florida's waste management and recycling infrastructure. There may be increased partnerships with private companies, non-profit organizations, and community groups to leverage resources and expertise.
 
-Furthermore, the 2015 Statewide Waste Characterization Study suggests that Illinois is making progress in reducing its waste generation rates. For example, compared to the 2008 study, the 2015 study found that the state's MSW generation rate decreased by approximately 14% (from 26% to 12%).
+5. Integration of renewable energy and sustainable practices: As part of Florida's sustainability goals, there could be a greater focus on integrating renewable energy sources (e.g., solar, wind) into waste management facilities and infrastructure, as well as promoting sustainable practices throughout the state.
 
-Overall, it appears that Illinois is actively working to improve its waste management through a combination of education, outreach, and innovative technologies.
+6. Improved public education and awareness: Effective waste management and environmental conservation require informed and engaged citizens. There may be increased efforts to educate Floridians about the importance of proper waste disposal, recycling, and sustainability, as well as encouraging community involvement in conservation initiatives.
+
+These are just a few potential directions for the future of Florida's waste management and environmental conservation efforts.
 
 
 

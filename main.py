@@ -298,7 +298,7 @@ def enduser_loop(enduser_id):
 
 
 def main():
-    print(database_helper.ADMIN_users_fetch())
+    # print(database_helper.ADMIN_users_fetch())
     """
     Handle main workflow of program.
 
